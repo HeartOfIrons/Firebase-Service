@@ -1,0 +1,40 @@
+--[[
+
+Using this code complies with the license attached to the link below.
+2023 // HeartOfIrons, Github: https://github.com/HeartOfIrons/Firebase-Service
+Firebase mainmodule. Connect this with your usage's mainmodule.
+
+]]--
+
+local Firebase = {}
+
+function Firebase.initialize(config)
+	Firebase.config = config
+end
+
+function Firebase.authenticateUser(userId, key, callback)
+	local url = Firebase.config.databaseURL .. "users/" .. userId .. ".json?auth=" .. Firebase.config.apiKey
+
+	local postData = {
+		key = key,
+	}
+
+	local success, result = pcall(function()
+		return game:GetService("HttpService"):RequestAsync({
+			Url = url,
+			Method = "PUT",
+			Headers = {
+				["Content-Type"] = "application/json",
+			},
+			Body = game:GetService("HttpService"):JSONEncode(postData),
+		})
+	end)
+
+	if success and result and result.StatusCode == 200 then
+		callback(true)
+	else
+		callback(false)
+	end
+end
+
+return Firebase
