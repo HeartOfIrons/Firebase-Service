@@ -1,0 +1,35 @@
+--[[
+
+Using this code complies with the license attached to the link below.
+2023 // HeartOfIrons, Github: https://github.com/HeartOfIrons/Firebase-Service
+Firebase mainmodule. Connect this with your usage's mainmodule.
+
+]]--
+
+
+local Firebase = require(script.Parent.FirebaseService) -- || Or wherever you keep your FirebaseService.
+
+local firebaseConfig = {
+	apiKey = "API_KEY",
+	authDomain = "AUTH_DOMAIN",
+	projectId = "PROJECT_ID",
+	databaseURL = "DATABASE_URL", -- || As of 2023, DatabaseURL technically does not exist, instead, you can enter: https://<PROJECT_ID>.firebaseio.com/
+	storageBucket = "STORAGE_BUCKET",
+	messagingSenderId = "SENDER_ID",
+}
+
+Firebase.initialize(firebaseConfig)
+
+local function authenticateUser(userId, key)
+	Firebase.authenticateUser(userId, key, function(success)
+		if success then
+			print("User authenticated!")
+		else
+			print("Authentication failed.")
+		end
+	end)
+end
+
+local userId = 0 -- || User ID you'll allow.
+local key = "KEY_" -- || Authorization key. // Key to input.
+authenticateUser(userId, key)
